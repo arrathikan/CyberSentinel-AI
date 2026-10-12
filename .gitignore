@@ -1,0 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Datasets & large data files (GitHub 100MB limit)
+archive-2/
+data/
+*.csv
+
+# Operating system files
+.DS_Store
+Thumbs.db
