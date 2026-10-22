@@ -1,18 +1,58 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Virtual environments
+# Python virtual environments
+.venv/
 venv/
 env/
-ENV/
 
-# Datasets & large data files (GitHub 100MB limit)
-archive-2/
-data/
-*.csv
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-# Operating system files
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# macOS
 .DS_Store
-Thumbs.db
+
+# VS Code local settings
+.vscode/
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# Raw and processed datasets
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Model artifacts
+models/*
+!models/.gitkeep
+
+# Generated reports
+reports/generated/
+reports/*.pdf
+
+# Logs
+*.log
+logs/
+
+# Frontend dependencies
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Test coverage
+.coverage
+htmlcov/
+
+# Temporary files
+*.tmp
+*.bak
