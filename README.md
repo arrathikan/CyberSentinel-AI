@@ -1,117 +1,200 @@
+
 # 🛡️ CyberAgent AI
 ### Intelligent Cyberattack Detection & Autonomous Security Investigation
 
 <p align="center">
-  <strong>Machine Learning • Agentic AI • Model Context Protocol • Cybersecurity</strong>
+  <strong>Machine Learning • Agentic AI • LangGraph • MCP • RAG • Cybersecurity</strong>
 </p>
 
 <p align="center">
-  An intelligent cybersecurity platform designed to detect suspicious network activity, investigate security alerts using autonomous AI agents, and generate evidence-based incident reports.
+  An AI-powered cybersecurity platform designed to detect suspicious network activity, automate security investigations, and generate evidence-based incident reports.
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white" />
   <img src="https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
   <img src="https://img.shields.io/badge/LangGraph-Agentic_AI-6D28D9?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/MCP-Tool_Integration-0F766E?style=for-the-badge" />
   <img src="https://img.shields.io/badge/XGBoost-Machine_Learning-EC6B23?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/MCP-Tool_Integration-0F766E?style=for-the-badge" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Project_Status-In_Development-yellow?style=flat-square" />
-  <img src="https://img.shields.io/badge/Current_Phase-Project_Setup-blue?style=flat-square" />
-  <img src="https://img.shields.io/badge/License-Not_Yet_Selected-lightgrey?style=flat-square" />
+  <img src="https://img.shields.io/badge/Status-In_Development-yellow" />
+  <img src="https://img.shields.io/badge/Focus-AI_Cybersecurity-blue" />
+  <img src="https://img.shields.io/badge/License-Not_Selected-lightgrey" />
 </p>
+
+---
+
+## 📑 Table of Contents
+
+- [Overview](#-overview)
+- [Problem Statement](#-problem-statement)
+- [Project Objectives](#-project-objectives)
+- [Key Features](#-key-features)
+- [System Architecture](#-system-architecture)
+- [How It Works](#-how-it-works)
+- [Technology Stack](#-technology-stack)
+- [Project Structure](#-project-structure)
+- [Machine Learning Pipeline](#-machine-learning-pipeline)
+- [Agentic AI Investigation](#-agentic-ai-investigation)
+- [MCP Integration](#-mcp-integration)
+- [Getting Started](#-getting-started)
+- [Development Roadmap](#-development-roadmap)
+- [Security Considerations](#-security-considerations)
+- [Future Enhancements](#-future-enhancements)
+- [Project Status](#-project-status)
 
 ---
 
 ## 🌟 Overview
 
-**CyberAgent AI** is an AI-powered cybersecurity platform that aims to transform traditional cyberattack detection into an intelligent, automated investigation process.
+**CyberAgent AI** is an intelligent cybersecurity platform that combines machine learning, large language models, autonomous AI agents, and security tools to support cyberattack detection and incident investigation.
 
-Traditional intrusion detection systems can identify suspicious activity and generate alerts. However, security analysts often need to manually examine logs, investigate indicators, and determine the significance of each alert.
+Traditional Intrusion Detection Systems (IDS) mainly focus on identifying suspicious network behavior and generating alerts.
 
-CyberAgent AI is designed to support this process by combining **machine learning-based threat detection** with **AI-driven security investigations**.
+However, security analysts must often investigate these alerts manually, analyze logs, identify possible attack techniques, and prepare incident reports.
 
-The platform will use machine learning models to analyze network traffic, LangGraph-based agents to coordinate investigations, MCP servers to access security tools, and Retrieval-Augmented Generation (RAG) to provide relevant cybersecurity knowledge.
+CyberAgent AI aims to improve this process by developing an intelligent system that can:
 
-### Our Vision
+- Detect suspicious network activity using machine learning.
+- Classify traffic as benign or potentially malicious.
+- Generate structured security alerts.
+- Investigate alerts through AI-powered workflows.
+- Access cybersecurity tools using Model Context Protocol (MCP).
+- Retrieve relevant cybersecurity knowledge using RAG.
+- Generate evidence-based security investigation reports.
+- Present findings through an interactive security dashboard.
 
-> Moving beyond simply detecting cyberattacks toward building an intelligent AI system that investigates threats, explains its findings, and assists cybersecurity analysts in making informed decisions.
+> **Project Vision:** Move beyond traditional intrusion detection by developing an intelligent cybersecurity assistant that detects potential threats, investigates suspicious activities, and supports human security analysts in making informed decisions.
+
+**Development note:** This repository is under active development. The capabilities described below represent the target architecture unless explicitly marked as implemented.
+
+---
+
+## 🚨 Problem Statement
+
+Modern networks generate large volumes of security events, making it difficult for security teams to identify and investigate suspicious activities efficiently.
+
+Traditional security monitoring approaches face several challenges:
+
+| Challenge | Description |
+|---|---|
+| Alert Overload | Security systems can produce large numbers of alerts requiring investigation. |
+| Manual Investigation | Analysts must examine logs and gather evidence manually. |
+| False Positives | Benign activities may be incorrectly classified as malicious. |
+| Tool Fragmentation | Relevant security information may be distributed across multiple tools. |
+| Investigation Time | Collecting evidence and preparing incident reports can take considerable time. |
+| Limited Explainability | Detection results may not clearly communicate why an event is suspicious. |
+
+### Proposed Solution
+
+CyberAgent AI combines machine learning-based detection with structured agentic investigation workflows.
+
+Instead of stopping after detecting a suspicious event, the system is designed to collect relevant evidence, consult security knowledge, and prepare an investigation report for analyst review.
 
 ---
 
 ## 🎯 Project Objectives
 
-The main objectives of CyberAgent AI are to:
+The primary objectives are:
 
-- Detect suspicious network traffic using supervised machine learning.
-- Classify network activity as benign or potentially malicious.
-- Generate structured security alerts based on detection results.
-- Investigate suspicious activity using Agentic AI.
-- Retrieve security logs and threat intelligence through MCP tools.
-- Use RAG to retrieve relevant cybersecurity knowledge.
-- Generate explainable, evidence-based security incident reports.
-- Provide an interactive security monitoring dashboard.
-- Support human-approved security response workflows.
+1. Build a machine learning pipeline for network intrusion detection.
+2. Compare multiple machine learning classification models.
+3. Develop a REST API for security predictions and alert management.
+4. Create structured AI investigation workflows using LangGraph.
+5. Integrate security tools using Model Context Protocol.
+6. Implement Retrieval-Augmented Generation for security knowledge.
+7. Store security alerts, investigation records, and relevant evidence.
+8. Develop an interactive security monitoring dashboard.
+9. Generate explainable security investigation reports.
+10. Support human oversight of security response decisions.
 
 ---
 
-## ⚡ Key Features
+## ✨ Key Features
 
 ### 🔍 1. Machine Learning-Based Threat Detection
 
-Train and evaluate models such as **Random Forest and XGBoost** to identify suspicious patterns in network traffic.
+The planned detection engine uses supervised machine learning to analyze network-flow features and identify potentially malicious activities.
 
-**Planned capabilities:**
-- Network-flow preprocessing and feature engineering.
-- Binary classification: Benign vs Attack.
-- Model comparison and evaluation.
-- Prediction confidence or risk scores, with appropriate calibration.
-- Security alert generation.
+**Capabilities:**
+
+- Network traffic preprocessing
+- Feature validation and transformation
+- Binary classification: Benign vs Attack
+- Multiple model training and comparison
+- Classification evaluation
+- Risk score generation
+- Security alert creation
+
+**Planned models:**
+
+- Logistic Regression
+- Random Forest
+- XGBoost
+
+Model selection will consider detection performance, false-positive rates, inference latency, and generalization.
 
 ### 🧠 2. Agentic AI Security Investigation
 
-Use **LangGraph** to coordinate intelligent investigation workflows.
+CyberAgent AI plans to use LangGraph to coordinate AI-powered investigation workflows.
 
-The agents will collect evidence, investigate suspicious events, retrieve security knowledge, and prepare incident reports.
+The investigation process will involve specialized components responsible for gathering evidence, investigating suspicious events, retrieving threat intelligence, and generating reports.
 
 **Planned agents:**
-- Alert Triage Agent
-- Security Investigation Agent
-- Threat Intelligence Agent
-- Incident Reporting Agent
+
+| Agent | Responsibility |
+|---|---|
+| Alert Triage Agent | Analyze incoming alerts and determine investigation priority. |
+| Investigation Agent | Retrieve security logs and examine suspicious activity. |
+| Threat Intelligence Agent | Gather available threat intelligence and attack technique information. |
+| Reporting Agent | Generate structured incident investigation reports. |
 
 ### 🔌 3. Model Context Protocol Integration
 
-CyberAgent AI will use **MCP** to provide standardized communication between AI agents and external security tools.
+Model Context Protocol (MCP) provides a standardized interface for connecting AI applications to external tools and data sources.
 
-**Planned MCP tools:**
+CyberAgent AI plans to use MCP servers to expose security investigation tools to AI agents.
 
-| Tool | Purpose |
+Potential tools include:
+
+| MCP Tool | Description |
 |---|---|
-| `search_security_logs` | Search relevant security events |
-| `get_ip_history` | Retrieve historical observations of an IP address |
-| `get_alert_details` | Retrieve detection and alert information |
-| `lookup_attack_technique` | Retrieve cybersecurity technique information |
-| `get_threat_intelligence` | Retrieve available threat intelligence |
-| `create_incident_draft` | Prepare an incident report for review |
+| `search_security_logs` | Search security events based on investigation criteria. |
+| `get_ip_history` | Retrieve historical observations associated with an IP address. |
+| `get_alert_details` | Retrieve security alert information. |
+| `lookup_attack_technique` | Access relevant cybersecurity technique information. |
+| `get_threat_intelligence` | Retrieve available intelligence about suspicious indicators. |
+| `create_incident_draft` | Prepare an incident report for analyst review. |
 
 ### 📚 4. Retrieval-Augmented Generation
 
-Integrate a cybersecurity knowledge base containing relevant security documentation, incident-response guidance, and MITRE ATT&CK information.
+The planned RAG system will retrieve cybersecurity knowledge relevant to an active investigation.
 
-The RAG pipeline will retrieve useful references to support evidence-based investigation explanations.
+Potential knowledge sources include:
+
+- MITRE ATT&CK documentation
+- Cybersecurity incident response guidance
+- Attack technique descriptions
+- Security research documents
+- Internal authorized security documentation
+
+Retrieved information will provide additional context for investigation explanations.
+
+RAG knowledge is supporting context and is not automatically considered evidence that a particular attack occurred.
 
 ### 📊 5. Security Operations Dashboard
 
-A planned React dashboard will provide:
+A React-based dashboard is planned to provide a centralized interface for security monitoring.
 
-- Network traffic monitoring
-- Security alert visualization
-- Threat trends and statistics
-- AI-generated investigation findings
-- Incident reports
+**Planned dashboard modules:**
+
+- Overview of security alerts
+- Network traffic analysis
+- Threat statistics
+- AI investigation results
+- Incident report management
 - Investigation history
 - Analyst review and approval
 
@@ -119,144 +202,218 @@ A planned React dashboard will provide:
 
 ## 🏗️ System Architecture
 
-The following diagram illustrates the proposed CyberAgent AI architecture.
+CyberAgent AI uses a modular architecture combining machine learning detection, backend services, AI investigation workflows, external security tools, and persistent storage.
 
 ```mermaid
 flowchart TD
-    A["Network Traffic & Security Logs"] --> B["Data Preprocessing"]
-    B --> C["Machine Learning Detection"]
-    C --> D["Security Alert Generation"]
-    D --> E["LangGraph Agent Orchestrator"]
+    A["Network Traffic Dataset"] --> B["Data Preprocessing"]
+    B --> C["ML Detection Engine"]
+    C --> D["Prediction and Risk Assessment"]
+    D --> E["Security Alert"]
 
-    E --> F["Alert Triage Agent"]
-    E --> G["Investigation Agent"]
-    E --> H["Threat Intelligence Agent"]
-    E --> I["Reporting Agent"]
+    E --> F["FastAPI Backend"]
+    F --> G["LangGraph Investigation Workflow"]
 
-    G --> J["MCP Client"]
-    H --> J
-    I --> J
+    G --> H["Alert Triage Agent"]
+    H --> I["Investigation Agent"]
+    I --> J["Threat Intelligence Agent"]
+    J --> K["Incident Reporting Agent"]
 
-    J --> K["Security Logs MCP Server"]
-    J --> L["Threat Intelligence MCP Server"]
-    J --> M["Incident Management MCP Server"]
+    I --> L["MCP Client"]
+    J --> L
 
-    H --> N["RAG Knowledge System"]
-    N --> O["Vector Database"]
+    L --> M["Security Logs MCP Server"]
+    L --> N["Threat Intelligence MCP Server"]
+    L --> O["Incident Management MCP Server"]
 
-    K --> P["Security Event Database"]
-    M --> P
+    J --> P["RAG Knowledge Retrieval"]
+    P --> Q["pgvector Knowledge Index"]
 
-    E --> Q["Evidence-Based Incident Report"]
-    Q --> R["FastAPI Backend"]
-    R --> S["React Security Dashboard"]
+    K --> R["Evidence-Based Incident Report"]
+    R --> S["Analyst Review"]
+
+    F <--> T[("PostgreSQL")]
+    F <--> U["React Dashboard"]
+    R --> F
 ```
 
-**Architecture responsibilities:**
+### Architecture Components
 
-- **Machine Learning:** Detect suspicious network activity.
-- **LangGraph:** Coordinate investigation workflows.
-- **MCP:** Standardize access to external tools and data.
-- **RAG:** Retrieve relevant cybersecurity knowledge.
-- **LLM:** Analyze evidence and generate explanations.
-- **FastAPI:** Expose application APIs.
-- **React:** Visualize alerts and investigation results.
+| Component | Technology | Responsibility |
+|---|---|---|
+| Data Processing | Pandas, NumPy | Data cleaning and feature preparation |
+| Detection Engine | Scikit-learn, XGBoost | Classify network activity |
+| Backend API | FastAPI | Provide prediction and application APIs |
+| AI Orchestration | LangGraph | Coordinate investigation workflows |
+| Security Tools | MCP Python SDK | Standardized access to external tools |
+| Knowledge Retrieval | LangChain, Embeddings | Retrieve relevant cybersecurity documents |
+| Vector Search | PostgreSQL + pgvector | Store and retrieve knowledge embeddings |
+| Database | PostgreSQL | Store alerts and investigation records |
+| Frontend | React, Tailwind CSS | Provide analyst dashboard |
+| Deployment | Docker | Package application services |
 
----
-
-## 🔄 How CyberAgent AI Works
-
-The proposed investigation workflow follows these steps:
-
-**Step 1 — Data Collection**
-
-Collect network-flow records and authorized security logs.
-
-**Step 2 — Data Preprocessing**
-
-Clean data, validate features, and transform records into the format expected by the trained model.
-
-**Step 3 — Attack Detection**
-
-Use a machine learning classifier to determine whether the network activity is benign or potentially malicious.
-
-**Step 4 — Alert Generation**
-
-Generate a security alert containing the detection result and references to the original evidence.
-
-**Step 5 — Agentic Investigation**
-
-A LangGraph workflow coordinates the investigation and determines which information is required.
-
-**Step 6 — MCP Tool Execution**
-
-The AI agent accesses authorized security logs, threat intelligence, and incident records using MCP tools.
-
-**Step 7 — Evidence Analysis**
-
-The LLM analyzes retrieved evidence, identifies possible explanations, and distinguishes confirmed observations from hypotheses.
-
-**Step 8 — Incident Reporting**
-
-Generate a structured report containing supporting evidence, potential risks, and recommended next steps.
-
-**Step 9 — Analyst Review**
-
-A human analyst reviews the incident and approves any potentially disruptive response actions.
+All technologies in this table represent the planned stack.
 
 ---
 
-## 🧰 Technology Stack
+## 🔄 How It Works
 
-| Category | Planned Technologies |
-|---|---|
-| Programming | Python 3.11 |
-| Machine Learning | Scikit-learn, XGBoost |
-| Data Processing | Pandas, NumPy |
-| Backend | FastAPI, Pydantic |
-| Agentic AI | LangGraph |
-| MCP | Official MCP Python SDK |
-| LLM Integration | OpenAI or another supported provider |
-| RAG | LangChain, Sentence Transformers |
-| Vector Database | PostgreSQL with pgvector |
-| Database | PostgreSQL |
-| Frontend | React, Tailwind CSS |
-| Deployment | Docker, Docker Compose |
-| Testing | Pytest |
-| Version Control | Git, GitHub |
+The target workflow consists of nine major stages.
+
+### Step 1 — Network Traffic Collection
+
+Network-flow data is obtained from an authorized dataset or supported monitoring source.
+
+### Step 2 — Data Preprocessing
+
+The system cleans and transforms the data into the feature format required by the detection model.
+
+Typical operations include:
+
+- Handling missing values
+- Removing invalid records
+- Encoding labels
+- Selecting relevant features
+- Applying appropriate feature transformations
+
+### Step 3 — Machine Learning Detection
+
+The trained classification model predicts whether the network-flow record represents benign or potentially malicious activity.
+
+Example conceptual prediction:
+
+```json
+{
+  "prediction": "Attack",
+  "attack_probability": 0.94,
+  "model": "XGBoost"
+}
+```
+
+This example illustrates a possible future response format and is not a measured project result.
+
+### Step 4 — Alert Generation
+
+Potentially suspicious predictions are converted into structured alerts.
+
+Alerts may include:
+
+- Alert identifier
+- Detection timestamp
+- Classification result
+- Model score
+- Relevant network metadata
+- Reference to original evidence
+
+### Step 5 — Investigation Orchestration
+
+LangGraph coordinates the investigation workflow and maintains investigation state.
+
+### Step 6 — Security Tool Execution
+
+Agents use authorized MCP tools to retrieve security events and additional investigation information.
+
+### Step 7 — Evidence Analysis
+
+An LLM evaluates the collected information and develops possible explanations.
+
+The system should distinguish factual observations, external intelligence, and AI-generated hypotheses.
+
+### Step 8 — Incident Reporting
+
+The reporting agent prepares a structured investigation summary.
+
+A report may contain:
+
+- Incident overview
+- Relevant network activity
+- Collected evidence
+- Possible attack techniques
+- Confidence and uncertainty
+- Recommended next steps
+
+### Step 9 — Human Analyst Review
+
+Security analysts review the generated findings.
+
+Potentially disruptive remediation actions require explicit authorization.
+
+---
+
+## 🛠️ Technology Stack
+
+### Machine Learning
+
+- Python 3.11
+- Scikit-learn
+- XGBoost
+- Pandas
+- NumPy
+
+### Backend Development
+
+- FastAPI
+- Pydantic
+- PostgreSQL
+
+### Agentic AI
+
+- LangGraph
+- Large Language Models
+- MCP Python SDK
+
+### Retrieval-Augmented Generation
+
+- LangChain
+- Sentence Transformers
+- PostgreSQL with pgvector
+
+### Frontend Development
+
+- React
+- Tailwind CSS
+
+### Development and Deployment
+
+- Git and GitHub
+- Visual Studio Code
+- Docker and Docker Compose
+- Pytest
 
 ---
 
 ## 📂 Project Structure
+
+The following structure represents the planned modular organization of CyberAgent AI.
 
 ```text
 CyberAgent-AI/
 │
 ├── backend/
 │   ├── app/
-│   │   ├── api/               # FastAPI routes
-│   │   ├── ml/                # ML inference services
-│   │   ├── agents/            # LangGraph workflows
-│   │   ├── mcp_client/        # MCP client integration
-│   │   ├── rag/               # Knowledge retrieval
-│   │   ├── database/          # Database integration
-│   │   └── main.py            # Backend entry point
+│   │   ├── api/                  # FastAPI endpoints
+│   │   ├── ml/                   # ML inference services
+│   │   ├── agents/               # LangGraph workflows
+│   │   ├── mcp_client/           # MCP client integration
+│   │   ├── rag/                  # Knowledge retrieval
+│   │   ├── database/             # Database integration
+│   │   └── main.py               # Backend entry point
 │   │
-│   ├── mcp_servers/           # MCP tool servers
-│   └── tests/                 # Backend tests
+│   ├── mcp_servers/              # MCP tool servers
+│   └── tests/                    # Backend tests
 │
 ├── ml_training/
-│   ├── scripts/               # Training scripts
-│   └── notebooks/             # Experiments
+│   ├── scripts/                  # Model training scripts
+│   └── notebooks/                # Experiments
 │
 ├── data/
-│   ├── raw/                   # Original datasets
-│   └── processed/             # Processed data
+│   ├── raw/                      # Original datasets
+│   └── processed/                # Processed datasets
 │
-├── models/                    # Trained models
-├── frontend/                  # React application
-├── docs/                      # Documentation
-├── reports/                   # Evaluation and reports
+├── models/                       # Saved ML models
+├── frontend/                     # React application
+├── docs/                         # Technical documentation
+├── reports/                      # Evaluation reports
 │
 ├── requirements.txt
 ├── .env.example
@@ -264,40 +421,158 @@ CyberAgent-AI/
 └── README.md
 ```
 
+Some directories will be implemented in later phases.
+
+Large datasets, trained model artifacts, sensitive records, and credentials should not be committed directly to Git.
+
 ---
 
-## 📊 Machine Learning Approach
+## 🤖 Machine Learning Pipeline
 
-### Dataset
+### Dataset — CSE-CIC-IDS2018
 
-The initial dataset planned for this project is **CSE-CIC-IDS2018**, which contains labeled network traffic from different benign and malicious activity scenarios.
+CyberAgent AI plans to use the **CSE-CIC-IDS2018** dataset for the initial intrusion detection experiments.
 
-Dataset: https://www.unb.ca/cic/datasets/ids-2018.html
+The dataset contains labeled network traffic associated with benign and malicious network activity.
 
-### Models
+**Official dataset:**
 
-We plan to compare:
+https://www.unb.ca/cic/datasets/ids-2018.html
 
-1. Logistic Regression — baseline.
-2. Random Forest — ensemble classifier.
-3. XGBoost — gradient-boosted decision trees.
+### Detection Objective
 
-### Evaluation
+The initial machine learning task is binary classification.
 
-Model performance will be evaluated using:
+| Class | Description |
+|---|---|
+| Benign | Network traffic labeled as normal |
+| Attack | Network traffic labeled as malicious |
 
-- Accuracy
-- Precision
-- Recall
-- F1-Score
-- Confusion Matrix
-- ROC-AUC and PR-AUC
-- False-positive rate
-- Inference latency
+Multiclass attack classification may be considered in future phases.
 
-Evaluation will use appropriate held-out data, with attention to class imbalance and data leakage.
+### Training Pipeline
 
-**Model results will be published after training and evaluation.**
+```mermaid
+flowchart LR
+    A["Raw CSV Files"] --> B["Data Cleaning"]
+    B --> C["Feature Preparation"]
+    C --> D["Train / Validation / Test Split"]
+    D --> E["Model Training"]
+    E --> F["Evaluation"]
+    F --> G["Model Selection"]
+    G --> H["Saved Model"]
+    H --> I["FastAPI Inference"]
+```
+
+Data preparation that learns statistical parameters must be fitted only on training data to prevent data leakage.
+
+### Model Comparison
+
+Three model types are planned.
+
+**Logistic Regression**
+
+Provides a useful baseline for understanding classification performance.
+
+**Random Forest**
+
+Combines multiple decision trees to capture nonlinear relationships.
+
+**XGBoost**
+
+Uses gradient-boosted decision trees and is a strong candidate for structured network-flow data.
+
+### Model Evaluation
+
+Evaluation will use the following metrics:
+
+| Metric | Purpose |
+|---|---|
+| Accuracy | Overall classification correctness |
+| Precision | Proportion of predicted attacks that are actual attacks |
+| Recall | Proportion of actual attacks successfully detected |
+| F1-Score | Balance between precision and recall |
+| Confusion Matrix | Breakdown of correct and incorrect predictions |
+| ROC-AUC | Class separation across classification thresholds |
+| PR-AUC | Precision-recall performance across thresholds |
+| False-Positive Rate | Proportion of benign events incorrectly flagged |
+| Inference Latency | Time required to generate predictions |
+
+Special attention will be given to class imbalance, data leakage, and evaluation on held-out traffic.
+
+**Model results:** Not yet published. Performance values will be added after training and evaluation.
+
+---
+
+## 🧠 Agentic AI Investigation
+
+CyberAgent AI will use LangGraph to develop stateful investigation workflows.
+
+Instead of relying on a single prompt, the system will coordinate a sequence of specialized investigation steps.
+
+### Investigation Workflow
+
+```mermaid
+flowchart TD
+    A["New Security Alert"] --> B["Alert Triage"]
+    B --> C["Evidence Collection"]
+    C --> D["Threat Intelligence Lookup"]
+    D --> E["Knowledge Retrieval"]
+    E --> F["Evidence Analysis"]
+    F --> G["Incident Report Draft"]
+    G --> H["Human Analyst Review"]
+```
+
+### Why LangGraph?
+
+LangGraph supports structured workflows involving:
+
+- Shared investigation state
+- Conditional execution
+- Tool calling
+- Controlled agent coordination
+- Human-in-the-loop workflows
+- Multi-step investigation processes
+
+The goal is to build a traceable investigation system where relevant actions, evidence, and decisions can be inspected.
+
+---
+
+## 🔌 MCP Integration
+
+Model Context Protocol helps connect AI applications to tools through a standardized communication interface.
+
+CyberAgent AI plans to implement custom MCP servers for security investigation functionality.
+
+### MCP Architecture
+
+```mermaid
+flowchart LR
+    A["LangGraph Agent"] --> B["MCP Client"]
+    B --> C["Security Logs Server"]
+    B --> D["Threat Intelligence Server"]
+    B --> E["Incident Management Server"]
+
+    C --> F[("Security Events")]
+    D --> G["Authorized Intelligence Sources"]
+    E --> H[("Incident Records")]
+```
+
+### Planned MCP Server Responsibilities
+
+**Security Logs MCP Server**
+
+Provides controlled access to relevant log records and event history.
+
+**Threat Intelligence MCP Server**
+
+Retrieves available information about suspicious indicators and attack techniques.
+
+**Incident Management MCP Server**
+
+Supports retrieval of incidents and preparation of investigation drafts.
+
+MCP standardizes tool access; it does not replace the database, machine learning model, or LangGraph orchestration engine.
 
 ---
 
@@ -305,99 +580,150 @@ Evaluation will use appropriate held-out data, with attention to class imbalance
 
 ### Prerequisites
 
+Install the following development tools:
+
 - Python 3.11
 - Git
 - Visual Studio Code
-- macOS, Linux, or Windows with a compatible Python environment
+- pip
+- A terminal application
 
-### 1. Clone the repository
+The initial setup targets macOS but can be adapted to other supported operating systems.
 
-Once the repository is published:
+### 1. Clone the Repository
+
+Once the repository has been published, clone it using its actual GitHub URL:
 
 ```bash
 git clone <YOUR_REPOSITORY_URL>
 cd CyberAgent-AI
 ```
 
-If you are already working in the local project folder, you can skip this step.
+If you are already working in the project folder, skip this step.
 
-### 2. Create a virtual environment
+### 2. Create a Python Virtual Environment
 
 ```bash
 python3.11 -m venv .venv
 ```
 
-Activate on macOS/Linux:
+### 3. Activate the Environment
+
+For macOS and Linux:
 
 ```bash
 source .venv/bin/activate
 ```
 
-Activate on Windows PowerShell:
+For Windows PowerShell:
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
 ```
 
-### 3. Install dependencies
+### 4. Install Dependencies
 
-As the project develops, its dependencies will be added to `requirements.txt`.
+If the project includes a populated `requirements.txt`, run:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-### 4. Run the current setup test
+### 5. Run the Initial Backend Setup Check
 
-At the current project setup stage:
+For the initial project setup:
 
 ```bash
 python -m backend.app.main
 ```
 
-Expected output:
+The setup-check output described in the original development plan is:
 
 ```text
 CyberAgent AI backend is ready!
 Project structure configured successfully.
 ```
 
-> The FastAPI server, ML prediction pipeline, MCP servers, and frontend will become available in later development phases.
+This command is a project initialization check, not a FastAPI web server.
+
+API endpoints, model inference, MCP services, and the frontend will be documented with their verified launch commands once implemented.
+
+---
+
+## 🧪 Testing Strategy
+
+The planned testing strategy includes:
+
+### Machine Learning Tests
+
+- Dataset schema validation
+- Missing-value handling
+- Feature transformation consistency
+- Model loading and inference
+- Classification evaluation
+
+### Backend Tests
+
+- API request validation
+- Response schema validation
+- Error handling
+- Database integration
+
+### Agent and MCP Tests
+
+- MCP tool input validation
+- Tool execution error handling
+- Investigation state management
+- Agent workflow transitions
+- Evidence reference validation
+- Human approval boundaries
+
+### Integration Tests
+
+End-to-end tests will validate the flow from network data ingestion to prediction, alert creation, investigation, and report generation.
 
 ---
 
 ## 🗺️ Development Roadmap
 
-| Phase | Description | Status |
+| Phase | Development Milestone | Status |
 |---|---|---|
-| 1 | Development environment setup | ✅ Completed |
-| 2 | Project structure and Git configuration | 🚧 In progress |
-| 3 | Dataset collection and exploration | ⏳ Planned |
-| 4 | Machine learning model training | ⏳ Planned |
-| 5 | FastAPI prediction service | ⏳ Planned |
-| 6 | PostgreSQL and alert management | ⏳ Planned |
-| 7 | MCP server implementation | ⏳ Planned |
-| 8 | LangGraph investigation workflows | ⏳ Planned |
-| 9 | Threat intelligence and RAG integration | ⏳ Planned |
-| 10 | React dashboard | ⏳ Planned |
+| 01 | Development environment setup | ✅ Completed |
+| 02 | Project structure and Git configuration | ✅ Completed |
+| 03 | CSE-CIC-IDS2018 dataset exploration | 🔄 In Progress |
+| 04 | Machine learning model training | ⏳ Planned |
+| 05 | FastAPI prediction service | ⏳ Planned |
+| 06 | PostgreSQL and alert management | ⏳ Planned |
+| 07 | Custom MCP server implementation | ⏳ Planned |
+| 08 | LangGraph investigation workflows | ⏳ Planned |
+| 09 | RAG and threat intelligence integration | ⏳ Planned |
+| 10 | React security dashboard | ⏳ Planned |
 | 11 | Testing, security, and deployment | ⏳ Planned |
+
+Roadmap statuses should be updated as each development phase is completed and verified.
 
 ---
 
-## 🔐 Security and Responsible Use
+## 🔐 Security Considerations
 
-CyberAgent AI is intended for defensive cybersecurity research, learning, and authorized security monitoring.
+CyberAgent AI is developed for defensive security research, education, and authorized security analysis.
 
-The project follows these principles:
+The system aims to follow secure engineering practices.
 
-- Analyze only authorized or publicly available security datasets.
-- Protect API keys and credentials.
-- Validate data supplied to tools and AI agents.
-- Enforce access controls for security records.
-- Treat retrieved content and logs as untrusted inputs.
-- Preserve evidence and source references.
-- Require human approval before potentially disruptive security actions.
-- Avoid treating LLM-generated hypotheses as verified facts.
+### Security Principles
+
+- Analyze only authorized or publicly available security data.
+- Protect secrets and API keys using environment variables.
+- Avoid committing sensitive logs or credentials to GitHub.
+- Validate user input and tool parameters.
+- Enforce appropriate access controls.
+- Treat logs and retrieved documents as untrusted content.
+- Preserve references to original evidence.
+- Separate confirmed observations from model-generated conclusions.
+- Require human authorization for potentially disruptive response actions.
+- Maintain investigation traceability.
+
+AI-generated reports are decision-support artifacts and should not automatically be treated as verified incident findings.
 
 ---
 
@@ -406,38 +732,68 @@ The project follows these principles:
 Potential future improvements include:
 
 - Multiclass attack classification
-- Streaming security event ingestion
+- Real-time network event ingestion
 - Advanced anomaly detection
-- Additional threat-intelligence integrations
+- Additional threat intelligence providers
 - Model drift monitoring
-- Human-feedback-based alert prioritization
-- Security incident trend analytics
-- Integration with authorized SIEM platforms
-- More advanced multi-agent investigation workflows
+- Explainable AI techniques
+- Security alert prioritization
+- Automated investigation summaries
+- SIEM platform integration
+- Human feedback for model improvement
+- Advanced multi-agent collaboration
+- Production monitoring and observability
 
 ---
 
-## 📖 Learning Outcomes
+## 🎓 Learning Objectives
 
-Through CyberAgent AI, this project aims to demonstrate practical knowledge of:
+CyberAgent AI is designed to demonstrate practical experience across multiple engineering areas.
 
-**Machine Learning:** data preprocessing, feature engineering, model training, evaluation, and deployment.
-
-**Agentic AI:** LLM reasoning, tool use, stateful workflows, and multi-agent coordination.
-
-**MCP:** implementing standardized communication between AI applications and security tools.
-
-**Cybersecurity:** intrusion detection, threat intelligence, incident investigation, and evidence-based reporting.
-
-**Software Engineering:** API development, databases, testing, Git, and deployment.
+| Area | Skills |
+|---|---|
+| Machine Learning | Data preprocessing, classification, feature engineering, and model evaluation |
+| Agentic AI | Stateful workflows, LLM tool use, and agent orchestration |
+| MCP | Tool servers, clients, and external system integration |
+| RAG | Embeddings, document retrieval, and knowledge-grounded generation |
+| Cybersecurity | Intrusion detection, security alerts, and incident investigation |
+| Backend Engineering | REST APIs, data validation, and database integration |
+| Frontend Engineering | Interactive dashboards and data visualization |
+| DevOps | Docker, environment configuration, testing, and deployment |
 
 ---
 
 ## 📌 Project Status
 
-**CyberAgent AI is currently under active development.**
+**CyberAgent AI is an active development project.**
 
-The repository will be updated as each component is implemented and tested. Features described in this README represent the intended system unless explicitly marked as completed.
+The initial development environment and project structure have been established.
+
+Current development is focused on the CSE-CIC-IDS2018 dataset exploration stage.
+
+The machine learning detection engine, agentic investigation workflows, MCP tool servers, RAG integration, and frontend dashboard remain planned development components.
+
+Documentation and results will be updated as the project progresses.
+
+---
+
+## 👨‍💻 Author
+
+**Arrathikasarma Aravinthan**
+
+AI/ML Engineering Enthusiast | Python Developer | Agentic AI & Cybersecurity
+
+**GitHub:** [github.com/arrathikan](https://github.com/arrathikan)
+
+**LinkedIn:** [Aravinthan Arrathikasarma](https://www.linkedin.com/in/aravinthan-arrathikasarma/)
+
+---
+
+## ⭐ Support the Project
+
+If you find CyberAgent AI interesting, consider starring the repository.
+
+Your support encourages continued development and improvement.
 
 ---
 
@@ -446,5 +802,5 @@ The repository will be updated as each component is implemented and tested. Feat
 </p>
 
 <p align="center">
-  Detect intelligently. Investigate systematically. Respond responsibly.
+  <em>Detect Intelligently. Investigate Systematically. Respond Responsibly.</em>
 </p>
