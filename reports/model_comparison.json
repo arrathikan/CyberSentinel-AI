@@ -1,0 +1,51 @@
+{
+  "dataset": "CSE-CIC-IDS2018",
+  "evaluation_split": "single_day_validation",
+  "test_set_evaluated": false,
+  "selection": {
+    "selected_model": "XGBoost",
+    "artifact_path": "models/xgboost_model.joblib",
+    "selection_metric": "validation_average_precision",
+    "tie_breaker": "validation_f1_score",
+    "decision_threshold": 0.5,
+    "test_set_evaluated": false
+  },
+  "results": {
+    "Random Forest": {
+      "accuracy": 0.9984841922910351,
+      "precision": 0.9976214073339941,
+      "recall": 0.9982149940499802,
+      "f1_score": 0.9979181124219292,
+      "roc_auc": 0.9999801260874834,
+      "average_precision": 0.9999658023863124,
+      "false_positive_rate": 0.0013617793917385383,
+      "confusion_matrix": {
+        "tn": 8800,
+        "fp": 12,
+        "fn": 9,
+        "tp": 5033
+      }
+    },
+    "XGBoost": {
+      "accuracy": 0.9996390934026274,
+      "precision": 0.999207135777998,
+      "recall": 0.9998016660055533,
+      "f1_score": 0.9995043124814117,
+      "roc_auc": 0.9999973666503235,
+      "average_precision": 0.9999952623320396,
+      "false_positive_rate": 0.00045392646391284613,
+      "confusion_matrix": {
+        "tn": 8808,
+        "fp": 4,
+        "fn": 1,
+        "tp": 5041
+      }
+    }
+  },
+  "limitations": [
+    "Only one capture day was evaluated",
+    "Chronological sampling may retain correlated sessions",
+    "Independent cross-day performance is unknown",
+    "Scores are not necessarily calibrated probabilities"
+  ]
+}
