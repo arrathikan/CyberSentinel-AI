@@ -22,13 +22,21 @@ import pandas as pd
 # Project root: CyberAgent-AI/
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
-# Original downloaded CSV
-DATA_PATH = (
+# Primary target dataset (CSE-CIC-IDS2018)
+PRIMARY_DATA_PATH = (
     PROJECT_ROOT
     / "data"
     / "raw"
     / "Wednesday-14-02-2018_TrafficForML_CICFlowMeter.csv"
 )
+
+# Use primary if available, otherwise fallback to existing CSV in data/raw
+if PRIMARY_DATA_PATH.is_file():
+    DATA_PATH = PRIMARY_DATA_PATH
+else:
+    raw_files = sorted((PROJECT_ROOT / "data" / "raw").glob("*.csv"))
+    DATA_PATH = raw_files[0] if raw_files else PRIMARY_DATA_PATH
+
 
 # Output report
 REPORT_PATH = (
