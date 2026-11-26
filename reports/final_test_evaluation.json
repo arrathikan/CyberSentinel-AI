@@ -1,0 +1,27 @@
+{
+  "model": "XGBoost",
+  "model_artifact": "models/xgboost_model.joblib",
+  "threshold": 0.5,
+  "test_rows": 13855,
+  "label_counts": {
+    "0": 8812,
+    "1": 5043
+  },
+  "metrics": {
+    "accuracy": 0.9994947672320462,
+    "precision": 0.9996031746031746,
+    "recall": 0.9990085266706326,
+    "f1_score": 0.9993057621739562,
+    "average_precision": 0.9999629841143954,
+    "roc_auc": 0.9999743355576001,
+    "false_positive_rate": 0.00022696323195642307,
+    "confusion_matrix": {
+      "tn": 8810,
+      "fp": 2,
+      "fn": 5,
+      "tp": 5038
+    }
+  },
+  "evaluation_scope": "Held-out subset of same capture day",
+  "generalization_to_new_days_verified": false
+}

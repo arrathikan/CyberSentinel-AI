@@ -10,6 +10,7 @@ benchmark.
 """
 
 import json
+import os
 from pathlib import Path
 
 import httpx
@@ -21,7 +22,8 @@ ROOT = Path(__file__).resolve().parents[2]
 SELECTION_FILE = ROOT / "models/selected_model.json"
 VALIDATION_FILE = ROOT / "data/processed/validation.csv"
 
-API_URL = "http://127.0.0.1:8001/api/v1/predict"
+API_URL = os.getenv("CYBERAGENT_API_URL", "http://127.0.0.1:8000/api/v1/predict")
+
 
 
 def main():

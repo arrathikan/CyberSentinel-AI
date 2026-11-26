@@ -4,10 +4,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # Directory paths
-BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR / "data"
-MODELS_DIR = BASE_DIR / "models"
-RESULTS_DIR = BASE_DIR / "results"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DATA_DIR = PROJECT_ROOT / "data"
+MODELS_DIR = PROJECT_ROOT / "models"
+RESULTS_DIR = PROJECT_ROOT / "reports"
 
 # Ensure output directories exist
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
@@ -25,7 +25,7 @@ def load_data(
     Loads and splits dataset into Train, Validation, and Test sets.
 
     Parameters:
-    - data_path: Path to the cleaned CSV file (default: data/cleaned_data.csv).
+    - data_path: Path to the cleaned CSV file (default: data/processed/cleaned_data.csv).
     - test_size: Proportion of dataset to include in the test split (default: 0.15).
     - val_size: Proportion of dataset to include in the validation split (default: 0.15).
     - sample_size: Optional integer to subsample the dataset (useful for faster training).
@@ -35,9 +35,14 @@ def load_data(
     - X_train, X_val, X_test, y_train, y_val, y_test
     """
     if data_path is None:
-        data_path = DATA_DIR / "cleaned_data.csv"
+        processed_file = DATA_DIR / "processed" / "cleaned_data.csv"
+        if processed_file.exists():
+            data_path = processed_file
+        else:
+            data_path = DATA_DIR / "cleaned_data.csv"
     else:
         data_path = Path(data_path)
+
 
     # Optional sample size override via environment variable SAMPLE_SIZE
     env_sample = os.getenv("SAMPLE_SIZE")
