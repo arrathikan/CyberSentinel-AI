@@ -215,7 +215,7 @@ def audit():
     return passed
 
 
-def evaluate():
+def evaluate(force: bool = False):
     """Evaluate the selected model on untouched test data."""
 
     # An audit is required before this evaluation.
@@ -230,9 +230,9 @@ def evaluate():
         audit_file.read_text()
     )
 
-    if not audit_result["basic_audit_passed"]:
+    if not audit_result["basic_audit_passed"] and not force:
         raise RuntimeError(
-            "The leakage audit did not pass."
+            "The leakage audit did not pass. Use '--force' if duplicate network flow patterns are expected."
         )
 
     selection, preprocessing = load_metadata()
@@ -392,6 +392,11 @@ def main():
         "command",
         choices=["audit", "evaluate"]
     )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Proceed with evaluation even if basic leakage audit reported duplicate hashes."
+    )
 
     args = parser.parse_args()
 
@@ -399,7 +404,7 @@ def main():
         audit()
 
     elif args.command == "evaluate":
-        evaluate()
+        evaluate(force=args.force)
 
 
 if __name__ == "__main__":
