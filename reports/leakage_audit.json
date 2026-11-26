@@ -1,0 +1,22 @@
+{
+  "method": "feature_hash_overlap_audit",
+  "feature_count": 78,
+  "rows": {
+    "train": 41562,
+    "validation": 13854,
+    "test": 13855
+  },
+  "unique_feature_hash_overlaps": {
+    "train_validation": 254,
+    "train_test": 255,
+    "validation_test": 164
+  },
+  "suspicious_feature_names": [],
+  "limitations": [
+    "Hashes can theoretically collide.",
+    "Identical features can represent different flows.",
+    "Non-identical correlated sessions are not detected.",
+    "All partitions originate from one capture day."
+  ],
+  "basic_audit_passed": false
+}
