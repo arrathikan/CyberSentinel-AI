@@ -17,6 +17,7 @@ from sqlalchemy import (
     Index,
     Integer,
     String,
+    UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -48,6 +49,12 @@ class Prediction(Base):
         Float,
         nullable=False,
     )
+    threshold: Mapped[float] = mapped_column(
+        Float,
+        default=0.5,
+        server_default="0.5",
+        nullable=False,
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
@@ -70,6 +77,7 @@ class Prediction(Base):
             "model_name": self.model_name,
             "prediction": self.prediction,
             "attack_score": self.attack_score,
+            "threshold": self.threshold,
             "created_at": self.created_at.isoformat() if self.created_at else None,
         }
 
@@ -124,6 +132,7 @@ class SecurityAlert(Base):
     )
 
     __table_args__ = (
+        UniqueConstraint("prediction_id", name="uq_security_alerts_prediction_id"),
         CheckConstraint(
             "severity IN ('low', 'medium', 'high', 'critical', 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL')",
             name="check_valid_severity",
@@ -150,3 +159,19 @@ class SecurityAlert(Base):
             f"<SecurityAlert(id={self.id}, prediction_id={self.prediction_id}, "
             f"severity='{self.severity}', status='{self.status}')>"
         )
+
+
+class AlertStatusChange(Base):
+    """Audit record for a committed alert status transition."""
+
+    __tablename__ = "alert_status_changes"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    alert_id: Mapped[int] = mapped_column(
+        ForeignKey("security_alerts.id", ondelete="CASCADE"), index=True,
+    )
+    previous_status: Mapped[str] = mapped_column(String(50))
+    new_status: Mapped[str] = mapped_column(String(50))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc),
+    )

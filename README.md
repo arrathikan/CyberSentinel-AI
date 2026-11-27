@@ -700,11 +700,13 @@ Records actionable threat alerts generated from malicious predictions:
 
 ---
 
-### Step 9C Integration Plan
-In **Step 9C**, incoming traffic evaluated by `/api/v1/predict`:
-1. Saves each inference record into the `predictions` table via the `get_db` FastAPI session dependency.
-2. If `attack_score` exceeds the decision threshold (e.g. `> 0.5`), automatically creates a linked `SecurityAlert` record with calculated severity based on the score and feature payload.
-3. Serves alert queries to the LangGraph autonomous investigation agents and frontend dashboard.
+### Step 9C Prediction Persistence and Alert Management
+
+The prediction API stores each inference in PostgreSQL. When the selected model
+classifies a flow as an attack, the API creates one linked alert in the same
+transaction. Analysts can review prediction history, filter alerts, and update
+alert status through the API. See the [Step 9C API and macOS setup guide](docs/step-9c-api.md).
+
 
 ---
 
@@ -750,7 +752,7 @@ docker compose down
 
 ### Database Initialization and Migrations
 
-#### Option 1: Alembic Migrations (Recommended)
+#### Alembic Migrations
 Apply database schema migrations:
 ```bash
 alembic upgrade head
@@ -761,11 +763,10 @@ Generate static SQL without connecting:
 alembic upgrade head --sql
 ```
 
-#### Option 2: Direct Table Initialization Script
-Initialize tables directly using SQLAlchemy `create_all`:
-```bash
-python -m backend.app.database.init_db
-```
+The direct table initializer is available for scratch databases. For an existing
+database initialized without Alembic, compare the schema to the revisions before
+stamping a matching revision and upgrading.
+
 
 ---
 
@@ -863,8 +864,8 @@ End-to-end tests will validate the flow from network data ingestion to predictio
 | 02 | Project structure and Git configuration | ✅ Completed |
 | 03 | CSE-CIC-IDS2018 dataset exploration | 🔄 In Progress |
 | 04 | Machine learning model training | ⏳ Planned |
-| 05 | FastAPI prediction service | ⏳ Planned |
-| 06 | PostgreSQL and alert management | ⏳ Planned |
+| 05 | FastAPI prediction service | ✅ Completed |
+| 06 | PostgreSQL prediction persistence and alert management (Steps 9B–9C) | ✅ Completed |
 | 07 | Custom MCP server implementation | ⏳ Planned |
 | 08 | LangGraph investigation workflows | ⏳ Planned |
 | 09 | RAG and threat intelligence integration | ⏳ Planned |

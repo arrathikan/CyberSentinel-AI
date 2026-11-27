@@ -87,9 +87,8 @@ def get_db() -> Generator[Session, None, None]:
     db = SessionLocal()
     try:
         yield db
-    except Exception as exc:
+    except Exception:
         db.rollback()
-        logger.error("Database session rolled back due to error: %s", exc)
         raise
     finally:
         db.close()
