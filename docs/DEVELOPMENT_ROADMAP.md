@@ -3,7 +3,7 @@
 Steps 9B and 9C provide PostgreSQL storage, trained XGBoost inference, atomic
 prediction and alert creation, and an audited alert status workflow. See the
 [Step 9C API guide](step-9c-api.md) for the current contract. All six features
-below are **planned**.
+below are planned unless explicitly marked implemented.
 
 Each feature goes into its own sequential pull request with implementation,
 automated tests, API or operator documentation, and a security review that
@@ -78,7 +78,10 @@ datasets or generated production artifacts.
 - **Done when.** A reviewer can inspect and approve or reject a recommendation,
   reproduce an approved simulation, and trace the complete decision history.
 
-## 5. Intelligent Alert Grouping
+## 5. Intelligent Alert Grouping (implemented)
+
+See the [incident correlation guide](incident-correlation.md) for the API,
+metadata requirements, and evaluation methodology.
 
 - **Architecture.** Assign related alerts to incidents using bounded time
   windows and available host identifiers and network metadata. Persist
