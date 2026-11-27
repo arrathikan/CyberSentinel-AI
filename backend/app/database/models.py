@@ -183,3 +183,49 @@ class AlertStatusChange(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc),
     )
+
+
+class Incident(Base):
+    """Group of detection alerts with the same pseudonymous flow key."""
+
+    __tablename__ = "incidents"
+    __table_args__ = (
+        Index("ix_incidents_correlation_lookup", "correlation_key", "last_seen_at"),
+        CheckConstraint("first_seen_at <= last_seen_at", name="ck_incident_seen_order"),
+        CheckConstraint(
+            "status IN ('open', 'investigating', 'resolved', 'closed')",
+            name="ck_incident_status",
+        ),
+        CheckConstraint(
+            "severity IN ('low', 'medium', 'high', 'critical')",
+            name="ck_incident_severity",
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    correlation_key: Mapped[str] = mapped_column(String(64))
+    title: Mapped[str] = mapped_column(String(120))
+    status: Mapped[str] = mapped_column(String(50), server_default="open", index=True)
+    severity: Mapped[str] = mapped_column(String(50), index=True)
+    first_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    last_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+
+
+class IncidentAlert(Base):
+    """One incident association per original alert."""
+
+    __tablename__ = "incident_alerts"
+    __table_args__ = (
+        UniqueConstraint("alert_id", name="uq_incident_alerts_alert_id"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    incident_id: Mapped[int] = mapped_column(
+        ForeignKey("incidents.id", ondelete="CASCADE"), index=True,
+    )
+    alert_id: Mapped[int] = mapped_column(ForeignKey("security_alerts.id", ondelete="CASCADE"))
+    correlation_reason: Mapped[str] = mapped_column(String(250))
+    observed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))

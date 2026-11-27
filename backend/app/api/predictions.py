@@ -12,6 +12,7 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field, FiniteFloat
 
 
+from backend.app.api.correlation import FlowMetadata, correlate_alert
 from backend.app.api.records import Database
 from backend.app.database.models import Prediction, SecurityAlert
 
@@ -23,6 +24,7 @@ class PredictionRequest(BaseModel):
     features: dict[str, Annotated[FiniteFloat, Field(strict=True)] | None] = Field(
         description="CICFlowMeter-compatible feature values"
     )
+    metadata: FlowMetadata | None = None
 
 
 class PredictionResponse(BaseModel):
@@ -84,6 +86,8 @@ def predict(
             )
             db.add(alert)
         db.flush()
+        if alert is not None:
+            correlate_alert(db, alert, payload.metadata, request.app.state.correlation_policy)
         return PredictionResponse(
             **result, prediction_id=record.id, alert_id=alert.id if alert else None,
         )

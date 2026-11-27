@@ -872,6 +872,9 @@ End-to-end tests will validate the flow from network data ingestion to predictio
 | 10 | React security dashboard | ⏳ Planned |
 | 11 | Testing, security, and deployment | ⏳ Planned |
 
+Optional [incident correlation](docs/incident-correlation.md) groups related
+alerts using validated flow metadata and exposes read-only incident APIs.
+
 See the [development roadmap](docs/DEVELOPMENT_ROADMAP.md) for the six planned
 features, their dependencies, and acceptance criteria.
 

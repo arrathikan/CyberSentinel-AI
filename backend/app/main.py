@@ -5,13 +5,17 @@ CyberAgent AI - FastAPI application.
 Loads the selected machine learning model at startup.
 """
 
-from contextlib import asynccontextmanager
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
+from fastapi.exception_handlers import request_validation_exception_handler
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 
+from backend.app.api.correlation import CorrelationPolicy
+from backend.app.api.incidents import router as incidents_router
 from backend.app.api.predictions import router
 from backend.app.api.records import router as records_router
 from backend.app.api.severity import SeverityPolicy
@@ -22,6 +26,7 @@ from backend.app.ml.inference import CyberattackPredictor
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    app.state.correlation_policy = CorrelationPolicy.from_environment()
     app.state.severity_policy = SeverityPolicy.from_environment()
     # Load the model once at application startup.
     app.state.predictor = CyberattackPredictor()
@@ -41,6 +46,19 @@ app = FastAPI(
 
 app.include_router(router)
 app.include_router(records_router)
+app.include_router(incidents_router)
+
+
+@app.exception_handler(RequestValidationError)
+async def handle_validation_error(request: Request, exc: RequestValidationError):
+    if request.url.path == "/api/v1/predict":
+        # Validation errors can otherwise echo submitted network identifiers.
+        errors = [
+            {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
+            for error in exc.errors()
+        ]
+        return JSONResponse(status_code=422, content={"detail": errors})
+    return await request_validation_exception_handler(request, exc)
 
 
 @app.exception_handler(SQLAlchemyError)
