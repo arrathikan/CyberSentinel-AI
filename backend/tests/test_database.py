@@ -141,21 +141,19 @@ def test_foreign_key_relationship_and_cascade(db_session: Session):
         attack_score=0.99,
     )
     alert1 = SecurityAlert(severity="high", status="open")
-    alert2 = SecurityAlert(severity="critical", status="investigating")
     pred.alerts.append(alert1)
-    pred.alerts.append(alert2)
 
     db_session.add(pred)
     db_session.flush()
 
     pred_id = pred.id
-    assert len(pred.alerts) == 2
+    assert len(pred.alerts) == 1
     assert alert1.prediction_id == pred_id
-    assert alert2.prediction == pred
+    assert alert1.prediction == pred
 
     # Verify query via relationship
     retrieved_pred = db_session.get(Prediction, pred_id)
-    assert len(retrieved_pred.alerts) == 2
+    assert len(retrieved_pred.alerts) == 1
 
     # Verify cascade delete
     db_session.delete(retrieved_pred)

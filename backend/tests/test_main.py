@@ -1,13 +1,27 @@
 import pytest
 from fastapi.testclient import TestClient
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+
+from backend.app.database.session import Base, get_db
 from backend.app.main import app
 
 
 @pytest.fixture(scope="module")
-def client():
-    with TestClient(app) as test_client:
-        yield test_client
+def client(tmp_path_factory):
+    engine = create_engine(f"sqlite:///{tmp_path_factory.mktemp('inference') / 'test.db'}")
+    Base.metadata.create_all(engine)
+
+    def get_test_db():
+        with Session(engine) as session:
+            yield session
+
+    with pytest.MonkeyPatch.context() as monkeypatch:
+        monkeypatch.setitem(app.dependency_overrides, get_db, get_test_db)
+        with TestClient(app) as test_client:
+            yield test_client
+    engine.dispose()
 
 
 def test_home(client):
