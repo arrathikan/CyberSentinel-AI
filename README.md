@@ -872,7 +872,8 @@ End-to-end tests will validate the flow from network data ingestion to predictio
 | 10 | React security dashboard | ⏳ Planned |
 | 11 | Testing, security, and deployment | ⏳ Planned |
 
-Roadmap statuses should be updated as each development phase is completed and verified.
+See the [development roadmap](docs/DEVELOPMENT_ROADMAP.md) for the six planned
+features, their dependencies, and acceptance criteria.
 
 ---
 

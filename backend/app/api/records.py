@@ -46,7 +46,9 @@ class PredictionRecord(BaseModel):
 
     id: int
     model_name: str
+    model_version: str | None
     prediction: int
+    label: str
     attack_score: float
     threshold: float
     created_at: datetime

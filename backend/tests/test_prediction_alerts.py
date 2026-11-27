@@ -19,6 +19,10 @@ def client_and_engine(tmp_path, monkeypatch):
     postgres_url = os.getenv("STEP9C_TEST_DATABASE_URL")
     engine = create_engine(postgres_url or f"sqlite:///{tmp_path / 'alerts.db'}")
     if postgres_url is None:
+        @event.listens_for(engine, "connect")
+        def enable_foreign_keys(connection, _):
+            connection.execute("PRAGMA foreign_keys=ON")
+
         Base.metadata.create_all(engine)
 
     def get_test_db():
@@ -26,6 +30,8 @@ def client_and_engine(tmp_path, monkeypatch):
             yield session
 
     class Predictor:
+        model_version = "2026.1"
+
         def predict(self, values):
             score = values["score"]
             prediction = int(score >= 0.5)
@@ -59,6 +65,11 @@ def test_prediction_and_alert_lifecycle(client_and_engine):
 
     history = client.get("/api/v1/predictions", params={"limit": 1}).json()
     assert history["items"][0]["id"] == attack["prediction_id"]
+    assert history["items"][0]["label"] == "Attack"
+    assert history["items"][0]["model_version"] == "2026.1"
+    older = client.get("/api/v1/predictions", params={"limit": 1, "offset": 1}).json()
+    assert older["items"][0]["id"] == benign["prediction_id"]
+    assert older["items"][0]["label"] == "Benign"
     page = client.get(
         "/api/v1/alerts", params={"status": "open", "severity": "critical", "limit": 1},
     ).json()
@@ -114,3 +125,11 @@ def test_severity_configuration(monkeypatch):
     monkeypatch.setenv("ALERT_SEVERITY_MEDIUM", "0.90")
     with pytest.raises(ValidationError):
         SeverityPolicy.from_environment()
+
+
+def test_alert_requires_existing_prediction(client_and_engine):
+    _, engine = client_and_engine
+    with Session(engine) as session:
+        session.add(SecurityAlert(prediction_id=-1, severity="high"))
+        with pytest.raises(IntegrityError):
+            session.commit()
