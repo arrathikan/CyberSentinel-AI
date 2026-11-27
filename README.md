@@ -40,6 +40,7 @@
 - [Agentic AI Investigation](#-agentic-ai-investigation)
 - [MCP Integration](#-mcp-integration)
 - [Getting Started](#-getting-started)
+- [PostgreSQL Database Integration](#-postgresql-database-integration-step-9b)
 - [Development Roadmap](#-development-roadmap)
 - [Security Considerations](#-security-considerations)
 - [Future Enhancements](#-future-enhancements)
@@ -647,6 +648,176 @@ Project structure configured successfully.
 This command is a project initialization check, not a FastAPI web server.
 
 API endpoints, model inference, MCP services, and the frontend will be documented with their verified launch commands once implemented.
+
+---
+
+## 🗄️ PostgreSQL Database Integration (Step 9B)
+
+CyberSentinel-AI includes a production-grade relational database layer powered by **PostgreSQL 17**, **SQLAlchemy 2.x**, **Psycopg 3**, and **Alembic**.
+
+### Database Schema Overview
+
+```text
+┌─────────────────────────────────┐
+│           predictions           │
+├─────────────────────────────────┤
+│ id (PK, Integer, autoincrement) │
+│ model_name (VARCHAR(100), Index)│
+│ prediction (Integer)            │
+│ attack_score (Float)            │
+│ created_at (TIMESTAMPTZ, Index) │
+└────────────────┬────────────────┘
+                 │ 1
+                 │
+                 │ * (CASCADE DELETE)
+┌────────────────▼────────────────┐
+│         security_alerts         │
+├─────────────────────────────────┤
+│ id (PK, Integer, autoincrement) │
+│ prediction_id (FK -> pred.id)   │
+│ severity (VARCHAR(50), Index)   │
+│ status (VARCHAR(50), default)   │
+│ created_at (TIMESTAMPTZ, Index) │
+└─────────────────────────────────┘
+```
+
+#### 1. `predictions` Table
+Records the model inference results on evaluated network traffic records:
+- `id`: Auto-incrementing primary key.
+- `model_name`: Identifier of the ML model used (e.g., `XGBoost`, `Random Forest`). Indexed for fast model-level filtering.
+- `prediction`: Integer label (`0` = Benign, `1` = Attack).
+- `attack_score`: Float confidence score / probability of cyberattack (`0.0` - `1.0`).
+- `created_at`: Timezone-aware UTC timestamp when inference was recorded.
+
+#### 2. `security_alerts` Table
+Records actionable threat alerts generated from malicious predictions:
+- `id`: Auto-incrementing primary key.
+- `prediction_id`: Foreign key referencing `predictions.id` with `ON DELETE CASCADE`.
+- `severity`: Threat severity level (`low`, `medium`, `high`, `critical`) enforced via database `CHECK` constraint.
+- `status`: Incident status (`open`, `investigating`, `resolved`, `closed`) enforced via database `CHECK` constraint (default: `open`).
+- `created_at`: Timezone-aware UTC timestamp.
+- Composite Index: Indexed on `(severity, status)` for rapid filtering in SOC dashboards.
+
+---
+
+### Step 9C Integration Plan
+In **Step 9C**, incoming traffic evaluated by `/api/v1/predict`:
+1. Saves each inference record into the `predictions` table via the `get_db` FastAPI session dependency.
+2. If `attack_score` exceeds the decision threshold (e.g. `> 0.5`), automatically creates a linked `SecurityAlert` record with calculated severity based on the score and feature payload.
+3. Serves alert queries to the LangGraph autonomous investigation agents and frontend dashboard.
+
+---
+
+### Environment Variables
+Configure these in your local `.env` file (copied from `.env.example`):
+
+| Variable | Description | Default Value |
+| :--- | :--- | :--- |
+| `DATABASE_URL` | SQLAlchemy connection URL (Psycopg 3) | `postgresql://cyberagent:local_dev_password@127.0.0.1:5433/cyberagent_db` |
+| `POSTGRES_USER` | Container PostgreSQL username | `cyberagent` |
+| `POSTGRES_PASSWORD` | Container PostgreSQL password | `local_dev_password` |
+| `POSTGRES_DB` | Target database name | `cyberagent_db` |
+| `POSTGRES_PORT` | Local host mapped port | `5433` |
+
+> [!NOTE]
+> For local development on macOS, the host port is mapped to `5433` to prevent collision with any existing local PostgreSQL service running on standard port `5432`.
+
+---
+
+### Docker Compose Commands
+
+Start the PostgreSQL 17 database service:
+```bash
+docker compose up -d postgres
+```
+
+Check container status and health:
+```bash
+docker compose ps
+```
+
+View database logs:
+```bash
+docker compose logs -f postgres
+```
+
+Stop the database:
+```bash
+docker compose down
+```
+
+---
+
+### Database Initialization and Migrations
+
+#### Option 1: Alembic Migrations (Recommended)
+Apply database schema migrations:
+```bash
+alembic upgrade head
+```
+
+Generate static SQL without connecting:
+```bash
+alembic upgrade head --sql
+```
+
+#### Option 2: Direct Table Initialization Script
+Initialize tables directly using SQLAlchemy `create_all`:
+```bash
+python -m backend.app.database.init_db
+```
+
+---
+
+### Verifying Database Connectivity
+
+1. Start the FastAPI backend:
+```bash
+uvicorn backend.app.main:app --port 8000 --reload
+```
+
+2. Check the `/health` endpoint:
+```bash
+curl http://127.0.0.1:8000/health
+```
+Response:
+```json
+{
+  "status": "ok",
+  "model_loaded": true,
+  "database": {
+    "status": "healthy",
+    "connected": true,
+    "database_url": "postgresql+psycopg://cyberagent:***@127.0.0.1:5433/cyberagent_db",
+    "error": null
+  }
+}
+```
+
+---
+
+### Running Database & Backend Tests
+Run the comprehensive automated test suite:
+```bash
+pytest backend/tests -v
+```
+
+---
+
+### Troubleshooting Common Issues
+
+* **`connection refused on 127.0.0.1:5433`**:
+  Ensure Docker Desktop is running and start the container with `docker compose up -d postgres`.
+* **Port 5432 already in use**:
+  The project is configured to bind to host port **`5433`** (`"127.0.0.1:5433:5432"`), preventing conflicts with native macOS Postgres instances.
+* **Driver incompatibility (`ModuleNotFoundError: No module named 'psycopg'`):**
+  Ensure dependencies are installed: `pip install -r requirements.txt`. SQLAlchemy 2.x uses `psycopg` (Psycopg 3).
+* **Resetting the local test database**:
+  ```bash
+  docker compose down -v
+  docker compose up -d postgres
+  alembic upgrade head
+  ```
 
 ---
 

@@ -4,15 +4,15 @@ services:
     container_name: cyberagent-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: cyberagent
-      POSTGRES_PASSWORD: local_dev_password
-      POSTGRES_DB: cyberagent_db
+      POSTGRES_USER: ${POSTGRES_USER:-cyberagent}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-cyberagent_db}
     ports:
       - "127.0.0.1:5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cyberagent -d cyberagent_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cyberagent} -d ${POSTGRES_DB:-cyberagent_db}"]
       interval: 5s
       timeout: 5s
       retries: 5

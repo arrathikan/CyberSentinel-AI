@@ -10,7 +10,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from backend.app.api.predictions import router
+from backend.app.database.session import check_db_health
 from backend.app.ml.inference import CyberattackPredictor
+
 
 
 @asynccontextmanager
@@ -44,7 +46,9 @@ def home():
 
 @app.get("/health")
 def health():
+    db_health = check_db_health()
     return {
         "status": "ok",
         "model_loaded": True,
+        "database": db_health,
     }
