@@ -17,6 +17,7 @@ from sqlalchemy import (
     Index,
     Integer,
     String,
+    Text,
     UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -41,6 +42,7 @@ class Prediction(Base):
         nullable=False,
         index=True,
     )
+    model_version: Mapped[str | None] = mapped_column(Text)
     prediction: Mapped[int] = mapped_column(
         Integer,
         nullable=False,
@@ -70,11 +72,17 @@ class Prediction(Base):
         passive_deletes=True,
     )
 
+    @property
+    def label(self) -> str:
+        return "Attack" if self.prediction else "Benign"
+
     def to_dict(self) -> dict[str, Any]:
         """Convert model instance to standard dictionary."""
         return {
             "id": self.id,
             "model_name": self.model_name,
+            "model_version": self.model_version,
+            "label": self.label,
             "prediction": self.prediction,
             "attack_score": self.attack_score,
             "threshold": self.threshold,

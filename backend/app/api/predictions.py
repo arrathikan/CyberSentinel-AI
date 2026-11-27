@@ -70,6 +70,7 @@ def predict(
     with db.begin():
         record = Prediction(
             model_name=result["model"],
+            model_version=predictor.model_version,
             prediction=result["prediction"],
             attack_score=result["attack_score"],
             threshold=result["threshold"],

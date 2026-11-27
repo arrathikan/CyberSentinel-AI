@@ -23,13 +23,21 @@ and a database operation failure returns 503.
 
 The existing XGBoost artifact supplies the prediction and its decision threshold.
 A single transaction stores the prediction and, for an attack classification,
-its alert. The database allows one alert per prediction. Each prediction
+its alert. The binary prediction stores the label code (0 for Benign, 1 for
+Attack). Prediction history and alert details include a display label and
+nullable `model_version`. The version is read from `model_version` in the
+selection file or, if the key is absent, from the trusted artifact metadata.
+Historical and unversioned predictions have a null version. The prediction POST
+response retains its existing fields.
+
+The database allows one alert per prediction. Each prediction
 submission is a new inference record, including repeated feature payloads.
 
 Revision `0002_add_threshold` adds the prediction threshold and defaults
 historical rows to 0.5. Revision `0003_alert_status_history` adds the unique
 constraint on `security_alerts.prediction_id` and the `alert_status_changes`
-table with alert ID, previous status, new status, and timestamp. Status updates
+table with alert ID, previous status, new status, and timestamp. Revision
+`0004_prediction_model_version` adds the nullable version column. Status updates
 lock the alert row and commit the change and audit row together.
 
 If an older database contains multiple alerts for a prediction, the uniqueness

@@ -47,6 +47,10 @@ class CyberattackPredictor:
 
         self.model = artifact["model"]
         self.model_name = selection["selected_model"]
+        version = selection.get("model_version", artifact.get("model_version"))
+        if version is not None and (not isinstance(version, str) or not version.strip()):
+            raise ValueError("Model version must be a nonempty string")
+        self.model_version = version
         self.features = artifact["feature_columns"]
         self.medians = artifact["imputation_medians"]
         self.threshold = float(
