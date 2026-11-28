@@ -18,13 +18,13 @@ def configure_correlation(monkeypatch):
     monkeypatch.setenv("INCIDENT_WINDOW_SECONDS", "300")
 
 
-def flow(source, observed_at, **overrides):
+def flow(source, event_time, **overrides):
     return {
         "source_ip": f"192.0.2.{source}",
         "destination_ip": "198.51.100.10",
         "destination_port": 443,
         "protocol": "tcp",
-        "observed_at": observed_at.isoformat(),
+        "observed_at": event_time.isoformat(),
         **overrides,
     }
 
@@ -82,7 +82,13 @@ def test_labeled_grouping_and_read_apis(client_and_engine):
 def test_incomplete_invalid_and_benign_metadata(client_and_engine):
     client, _ = client_and_engine
     now = datetime.now(timezone.utc)
-    for metadata in (None, flow(3, now, destination_ip=None), flow(3, now + timedelta(hours=1))):
+    for metadata in (
+        None,
+        flow(3, now, destination_ip=None),
+        flow(3, now + timedelta(hours=1)),
+        flow(3, now, observed_at="0001-01-01T00:00:00Z"),
+        flow(3, now, observed_at="0001-01-01T00:00:00+01:00"),
+    ):
         response = submit(client, metadata)
         assert response.status_code == 200
         alert_id = response.json()["alert_id"]

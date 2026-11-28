@@ -62,9 +62,16 @@ def correlate_alert(
     if any(signal is None for signal in signals):
         return None
 
-    observed_at = utc(metadata.observed_at)
+    window = timedelta(seconds=policy.window_seconds)
     now = datetime.now(timezone.utc)
-    if observed_at > now + timedelta(minutes=5):
+    try:
+        observed_at = utc(metadata.observed_at)
+        if observed_at > now + timedelta(minutes=5):
+            return None
+        lower_bound = observed_at - window
+        upper_bound = observed_at + window
+    except OverflowError:
+        # Keep the original alert even when correlation cannot represent its window.
         return None
 
     key = hmac.new(
@@ -82,15 +89,14 @@ def correlate_alert(
         lock_key = int.from_bytes(bytes.fromhex(key[:16]), "big", signed=True)
         db.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": lock_key})
 
-    window = timedelta(seconds=policy.window_seconds)
     candidates = db.scalars(
         select(Incident)
         .where(
             Incident.correlation_key == key,
             Incident.status.in_(("open", "investigating")),
-            Incident.last_seen_at >= observed_at - window,
-            Incident.last_seen_at <= observed_at + window,
-            Incident.first_seen_at >= observed_at - window,
+            Incident.last_seen_at >= lower_bound,
+            Incident.last_seen_at <= upper_bound,
+            Incident.first_seen_at >= lower_bound,
         )
         .order_by(Incident.last_seen_at.desc(), Incident.id.desc())
     )

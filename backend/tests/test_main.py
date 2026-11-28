@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from backend.app.database.session import Base, get_db
 from backend.app.main import app
+from backend.app.ml.inference import CyberattackPredictor
 
 
 @pytest.fixture(scope="module")
@@ -66,3 +67,15 @@ def test_predict_endpoint(client):
     assert "prediction" in result
     assert "label" in result
     assert result["label"] in ["Benign", "Attack"]
+
+
+def test_inference_accepts_large_finite_integer():
+    predictor = CyberattackPredictor()
+    values = dict.fromkeys(predictor.features, 0)
+    values[predictor.features[0]] = 10**30
+    assert predictor.predict(values) == predictor.predict(
+        {key: float(value) for key, value in values.items()}
+    )
+    values[predictor.features[0]] = 10**400
+    with pytest.raises(ValueError, match="must be finite"):
+        predictor.predict(values)

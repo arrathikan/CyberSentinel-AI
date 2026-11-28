@@ -258,6 +258,21 @@ def test_check_db_health():
     assert unhealthy["error"] is not None
 
 
+def test_health_redacts_connection_details(monkeypatch, caplog):
+    engine = create_db_engine("postgresql+psycopg://user:example-password@localhost/db"
+                              "?application_name=private-option")
+
+    def fail_connect():
+        raise RuntimeError("private-driver-detail")
+
+    monkeypatch.setattr(engine, "connect", fail_connect)
+    health = check_db_health(engine)
+    assert health["connected"] is False
+    for value in ("example-password", "private-option", "private-driver-detail"):
+        assert value not in str(health)
+        assert value not in caplog.text
+
+
 # ---------------------------------------------------------
 # 9. FastAPI health endpoint includes database status
 # ---------------------------------------------------------

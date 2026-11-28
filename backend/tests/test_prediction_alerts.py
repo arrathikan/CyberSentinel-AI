@@ -75,6 +75,7 @@ def test_prediction_and_alert_lifecycle(client_and_engine):
     ).json()
     assert page["items"][0]["id"] == attack["alert_id"]
     assert client.get("/api/v1/alerts", params={"limit": 0}).status_code == 422
+    assert client.get("/api/v1/alerts", params={"offset": 2**63}).status_code == 422
     assert client.get("/api/v1/alerts/2147483647").status_code == 404
     assert client.get(url).json()["prediction"]["id"] == attack["prediction_id"]
     assert client.patch(f"{url}/status", json={"status": "closed"}).status_code == 409

@@ -15,7 +15,6 @@ from typing import Any, Generator
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
-from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 # Ensure environment variables are loaded
@@ -101,9 +100,8 @@ def check_db_health(test_engine=None, timeout: float = 3.0) -> dict[str, Any]:
     Returns a dictionary with status, driver, and error details if unavailable.
     """
     target_engine = test_engine or engine
-    db_url = str(target_engine.url)
-    # Mask password for safety in reports
-    safe_url = target_engine.url.render_as_string(hide_password=True)
+    # Connection options and driver exceptions can also contain private values.
+    safe_url = target_engine.url.set(query={}).render_as_string(hide_password=True)
 
     try:
         with target_engine.connect() as conn:
@@ -114,19 +112,11 @@ def check_db_health(test_engine=None, timeout: float = 3.0) -> dict[str, Any]:
             "database_url": safe_url,
             "error": None,
         }
-    except SQLAlchemyError as exc:
-        logger.warning("Database connectivity check failed: %s", exc)
-        return {
-            "status": "unhealthy",
-            "connected": False,
-            "database_url": safe_url,
-            "error": str(exc),
-        }
     except Exception as exc:
-        logger.warning("Unexpected error during database health check: %s", exc)
+        logger.warning("Database connectivity check failed (%s)", type(exc).__name__)
         return {
             "status": "unhealthy",
             "connected": False,
             "database_url": safe_url,
-            "error": str(exc),
+            "error": "Database connection check failed",
         }

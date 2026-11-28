@@ -15,7 +15,7 @@ from backend.app.database.session import get_db
 router = APIRouter(prefix="/api/v1", tags=["Prediction history and alerts"])
 Database = Annotated[Session, Depends(get_db)]
 Limit = Annotated[int, Query(ge=1, le=100)]
-Offset = Annotated[int, Query(ge=0)]
+Offset = Annotated[int, Query(ge=0, le=2**63 - 1)]
 AlertID = Annotated[int, Path(ge=1, le=2147483647)]
 
 

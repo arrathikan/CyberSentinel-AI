@@ -7,10 +7,10 @@ Only locally trained, trusted model artifacts are loaded.
 """
 
 import json
+from math import isfinite
 from pathlib import Path
 
 import joblib
-import numpy as np
 import pandas as pd
 
 
@@ -118,12 +118,17 @@ class CyberattackPredictor:
                     f"{feature} must be numeric or null"
                 )
 
-            if not np.isfinite(value):
+            try:
+                numeric_value = float(value)
+            except OverflowError as exc:
+                raise ValueError(f"{feature} must be finite") from exc
+
+            if not isfinite(numeric_value):
                 raise ValueError(
                     f"{feature} must be finite"
                 )
 
-            cleaned[feature] = float(value)
+            cleaned[feature] = numeric_value
 
         # Preserve exact training feature order.
         X = pd.DataFrame(
